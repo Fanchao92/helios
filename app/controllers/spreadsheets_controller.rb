@@ -32,36 +32,31 @@ class SpreadsheetsController < ApplicationController
     params_to_pass["name"] = params["year"]
     @spreadsheet = Spreadsheet.new(params_to_pass)
     
+    saved = @spreadsheet.saveAndMove
     #do the database population in separate thread
     Thread.new do
-    
-      saved = @spreadsheet.saveAndMove
+      if saved
+        location = "public/uploads/spreadsheet/attachment/" + params["spreadsheet"]["attachment"].original_filename 
         
-      location = "public/uploads/spreadsheet/attachment/" + params["spreadsheet"]["attachment"].original_filename 
-      command = "cat " + location 
-      system(command) 
-        
-      csv_data = CSV.read location 
-      headerFields = csv_data[0] 
-      headerFields = headerFields.map { |header| 
-        CreateHeaderString(header).to_sym 
-      } 
-        
-      iteration = 0 
-      csv_data.each do |data| 
-       if iteration > 0   
-         createStudent(headerFields, data, params["year"]) 
-       end 
-       iteration = iteration + 1 
+        csv_data = CSV.read location 
+        headerFields = csv_data[0] 
+        headerFields = headerFields.map { |header| 
+          CreateHeaderString(header).to_sym 
+        } 
+          
+        iteration = 0 
+        csv_data.each do |data| 
+         if iteration > 0   
+           createStudent(headerFields, data, params["year"]) 
+         end 
+         iteration = iteration + 1 
+        end
+        ActiveRecord::Base.connection.close
       end
-      ActiveRecord::Base.connection.close
-      
           
       @@val = true
 
     end
-  
-    data = {:value => "Howdy"} #likely was just used for testing
 
     respond_to do |format|
       format.html

@@ -40,13 +40,14 @@
     %hr/
         
     -# used to upload a new file
+    -# The URL to be redirected to is achieved by calling @spreadsheet.class
     = form_for @spreadsheet, :remote => true, authenticity_token:true, :id => "submitForm", html: { multipart: true } do |f|
       = f.label :year
       %select#queryList{:name => "year"}
         - (1995..2055).each do |i|
           %option{:value => i}= i
       = f.label :attachment
-      = f.file_field :attachment
+      = f.file_field :attachment, :accept => ".csv"
       = f.submit "Save", class: "btn btn-primary"
       
     %div

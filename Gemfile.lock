@@ -266,7 +266,6 @@ DEPENDENCIES
   autotest
   bootstrap-sass (~> 2.3.2)
   byebug
-  capybara (~> 2.6, >= 2.6.2)
   carrierwave (~> 0.9)
   coffee-rails (~> 4.1.0)
   cucumber-rails
@@ -294,4 +293,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.11.2
+   1.12.5

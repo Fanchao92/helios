@@ -56,13 +56,13 @@ group :development, :test do
   gem 'cucumber-rails', :require => false
   gem 'cucumber-rails-training-wheels'
   gem 'database_cleaner'
-  gem 'capybara-webkit'
+#  gem 'capybara-webkit'
   gem 'headless'
 end
 
 group :test do
   gem "faker"
-  gem 'capybara', '~> 2.6', '>= 2.6.2'
+#  gem 'capybara', '~> 2.6', '>= 2.6.2'
   gem "guard-rspec"
   gem "launchy"
   gem 'rspec-html-matchers'

@@ -1,11 +1,6 @@
 class Student < ActiveRecord::Base
     require 'csv'
     def self.to_csv(all_products, selected_columns)
-        
-        puts "========================"
-        puts selected_columns.inspect
-        puts "========================"
-        
         hasCount = selected_columns.find { |item| item =~ /count/i }
         selected_columns.reject!{|item| item =~ /count/i }
         
