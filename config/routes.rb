@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'statistics/getForms'
+  
+  get 'statistics/getForm1'
+
   get 'site/receiveAjax' => 'site#receiveAjax'
   
   get 'spreadsheets/receiveAjaxSpreadsheet' => 'spreadsheets#receiveAjaxSpreadsheet'

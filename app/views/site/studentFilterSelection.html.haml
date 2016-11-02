@@ -24,7 +24,9 @@
       %a{:id => "Back", :href => site_index_path}
         %img{:height => "30", :src => "/images/previous-icon.png", :width => "30"}/
     
-    -#generate the links to download the statistics forms
+    -#Add A button to redirect to the downloading page
+    = form_tag(statistics_getForms_path, method: "get") do
+      = submit_tag("Extract Statistics")
         
     -#form that allows the user to select which saved Query they want to load
     %form{:action => site_studentFilterSelection_path}

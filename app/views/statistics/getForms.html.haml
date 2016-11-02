@@ -1,0 +1,26 @@
+%html
+  %head
+    %title Taulbee survey Statistics
+    :css
+      .heading{
+      	color:white;
+      	background-color:#500000;
+      	height:50px;
+      	margin:0;
+      	padding:0;
+      	font-size:40px;
+      }
+      
+      .centered{
+      	text-align:center;
+      }
+      
+  %body
+    %h1.centered.heading Taulbee Survey
+    %p
+      %a{:id => "Home", :href => site_index_path}
+        %img{:height => "30", :src => "/images/homepageicon.jpg", :width => "30"}/
+      %a{:id => "Back", :href => site_studentFilterSelection_path}
+        %img{:height => "30", :src => "/images/previous-icon.png", :width => "30"}/
+    
+    = link_to @file_names[ :form1 ], statistics_getForm1_path
