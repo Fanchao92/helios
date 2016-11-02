@@ -32,6 +32,29 @@ class SiteController < ApplicationController
       @students = Student.where("year = \'" + session["yearSelected"] + "\'")
     end
     
+    # Database Aggregation by student major
+    new_students = {"CP" => 0, "CE" => 0}
+    selectedStudents = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ?", session[ "yearSelected" ]+"%", "CP%" ]).group(:prim_deg_maj_1).count
+    selectedStudents.each { |maj, num|
+      new_students[ "CP" ] += num
+    }
+    selectedStudents = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ?", session[ "yearSelected" ]+"%", "CE%" ]).group(:prim_deg_maj_1).count
+    selectedStudents.each { |maj, num|
+      new_students[ "CE" ] += num
+    }
+    
+    prior_students = {"CP" => 0, "CE" => 0}
+    selectedStudents = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ?", (session[ "yearSelected" ].to_i-1).to_s+"%", "CP%" ]).group(:prim_deg_maj_1).count
+    selectedStudents.each { |maj, num|
+      prior_students[ "CP" ] += num
+    }
+    selectedStudents = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ?", (session[ "yearSelected" ].to_i-1).to_s+"%", "CE%" ]).group(:prim_deg_maj_1).count
+    selectedStudents.each { |maj, num|
+      prior_students[ "CE" ] += num
+    }
+    
+    # Generate .csv file containing all the statistics
+    
     @queries = Query.all #gets all the stored queries
     
     #if a query was loaded
@@ -181,6 +204,7 @@ class SiteController < ApplicationController
   
   #unused
   private
+  
     def populate_db(csvFile)
       csv_data = CSV.read csvFile
       headers = csv_data.shift
