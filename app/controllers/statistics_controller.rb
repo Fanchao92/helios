@@ -1,6 +1,6 @@
 class StatisticsController < ApplicationController
   def getForms
-    unless flash[ :is_form1_downloaded ]
+    unless File.exists? "public/downloads/#{session[ "yearSelected" ]}.csv"
       # Database Aggregation 
       new_students = {}
       new_students[ "CP" ] = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ? and prim_deg like ?", session[ "yearSelected" ]+"%", "CP%", "M%" ]).count
@@ -27,8 +27,7 @@ class StatisticsController < ApplicationController
     Thread.new do
       send_file "public/downloads/#{session[ "yearSelected" ]}.csv", type: 'text/csv'
     end
-
-    flash[ :is_form1_downloaded ] = true
+    
     redirect_to statistics_getForms_path and return
   end
 end
