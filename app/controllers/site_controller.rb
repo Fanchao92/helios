@@ -32,28 +32,21 @@ class SiteController < ApplicationController
       @students = Student.where("year = \'" + session["yearSelected"] + "\'")
     end
     
-    # Database Aggregation by student major
-    new_students = {"CP" => 0, "CE" => 0}
-    selectedStudents = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ?", session[ "yearSelected" ]+"%", "CP%" ]).group(:prim_deg_maj_1).count
-    selectedStudents.each { |maj, num|
-      new_students[ "CP" ] += num
-    }
-    selectedStudents = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ?", session[ "yearSelected" ]+"%", "CE%" ]).group(:prim_deg_maj_1).count
-    selectedStudents.each { |maj, num|
-      new_students[ "CE" ] += num
-    }
+    # Database Aggregation 
+    new_students = {}
+    new_students[ "CP" ] = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ? and prim_deg like ?", session[ "yearSelected" ]+"%", "CP%", "M%" ]).count
+    new_students[ "CE" ] = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ? and prim_deg like ?", session[ "yearSelected" ]+"%", "CE%", "M%" ]).count
     
-    prior_students = {"CP" => 0, "CE" => 0}
-    selectedStudents = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ?", (session[ "yearSelected" ].to_i-1).to_s+"%", "CP%" ]).group(:prim_deg_maj_1).count
-    selectedStudents.each { |maj, num|
-      prior_students[ "CP" ] += num
-    }
-    selectedStudents = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ?", (session[ "yearSelected" ].to_i-1).to_s+"%", "CE%" ]).group(:prim_deg_maj_1).count
-    selectedStudents.each { |maj, num|
-      prior_students[ "CE" ] += num
-    }
+    prior_students = {}
+    prior_students[ "CP" ] = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ? and prim_deg like ?", (session[ "yearSelected" ].to_i-1).to_s+"%", "CP%", "M%" ]).count
+    prior_students[ "CE" ] = Student.where([ "first_tamu_term like ? and prim_deg_maj_1 like ? and prim_deg like ?", (session[ "yearSelected" ].to_i-1).to_s+"%", "CE%", "M%" ]).count
     
     # Generate .csv file containing all the statistics
+    CSV.open("public/downloads/#{session[ "yearSelected" ]}.csv", "wb") do |csv|
+      csv << ["", "CS", "CE"]
+      csv << ["Number of newly-admitted masters students", new_students[ "CP" ].to_s, new_students[ "CE" ].to_s]
+      csv << ["Prior Year", prior_students[ "CP" ].to_s, prior_students[ "CE" ].to_s]
+    end
     
     @queries = Query.all #gets all the stored queries
     
