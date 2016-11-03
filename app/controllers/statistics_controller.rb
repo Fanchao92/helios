@@ -24,10 +24,6 @@ class StatisticsController < ApplicationController
   end
   
   def getForm1
-    Thread.new do
-      send_file "public/downloads/#{session[ "yearSelected" ]}.csv", type: 'text/csv'
-    end
-    
-    redirect_to statistics_getForms_path and return
+    send_file "public/downloads/#{session[ "yearSelected" ]}.csv", type: 'text/csv' and return
   end
 end

@@ -121,13 +121,23 @@ class SiteController < ApplicationController
     return @query
   end
   
+  def form_j1
+    respond_to do |format|
+      format.csv { send_data Student.to_j1_csv(session[ "yearSelected" ].to_i)}
+    end
+  end
+  
   #page that shows the results
   def studentOutput
-    if params["commit"] == "Save"
+    if params[ "commit" ] == "Generate"
+      flash[ :is_for_statistics_form ] = true
+    elsif params["commit"] == "Save"
+      flash[ :is_for_statistics_form ] = false
       saveQuery(params)
     else
       #if the query is not being saved
       #select all the filters and filter values chosen
+      flash[ :is_for_statistics_form ] = false
       filters = params.select { |key, value| key.to_s.match(/filter\d+/) }
       comparators = params.select { |key, value| key.to_s.match(/comparator\d+/) }
       filterValues = params.select { |key, value| key.to_s.match(/filterValue\d+/) }
@@ -181,7 +191,6 @@ class SiteController < ApplicationController
   
   #unused
   private
-  
     def populate_db(csvFile)
       csv_data = CSV.read csvFile
       headers = csv_data.shift

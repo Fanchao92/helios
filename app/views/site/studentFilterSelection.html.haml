@@ -25,8 +25,12 @@
         %img{:height => "30", :src => "/images/previous-icon.png", :width => "30"}/
     
     -#Add A button to redirect to the downloading page
-    = form_tag(statistics_getForms_path, method: "get") do
-      = submit_tag("Extract Statistics")
+    -#= form_tag(statistics_getForms_path, method: "get") do
+      -#= submit_tag("Extract Statistics")
+    
+    -#Add A button to redirect to the downloading page
+    = form_tag(site_studentOutput_path) do
+      = submit_tag("Generate")
         
     -#form that allows the user to select which saved Query they want to load
     %form{:action => site_studentFilterSelection_path}
