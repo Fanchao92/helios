@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   #root 'movies#index'
   get 'site/form_j1'
+  get 'site/form_f3'
   get 'site/index'
   get 'site/selectStudentOrFaculty'
   get 'site/facultyFilterSelection'

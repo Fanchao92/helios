@@ -33,7 +33,9 @@
     %hr/
     
     -if flash[ :is_for_statistics_form ]
-      =link_to "Form #{session[ "yearSelected" ]}-The Number of Masters Student", site_form_j1_path+".csv"
+      =link_to "Form #{session[ "yearSelected" ]}-The Number of newly admitted Masters Students", site_form_j1_path+".csv"
+      %br
+      =link_to "Form #{session[ "yearSelected" ]}-The number of newly admitted PhD Students", site_form_f3_path+".csv"
     -else
       -#table used to display all results
       %h2 Result

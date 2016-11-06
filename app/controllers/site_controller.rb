@@ -123,7 +123,13 @@ class SiteController < ApplicationController
   
   def form_j1
     respond_to do |format|
-      format.csv { send_data Student.to_j1_csv(session[ "yearSelected" ].to_i)}
+      format.csv { send_data Student.to_j1_csv(session[ "yearSelected" ].to_i) }
+    end
+  end
+  
+  def form_f3
+    respond_to do |format|
+      format.csv { send_data Student.to_f3_csv(session[ "yearSelected" ].to_i) }
     end
   end
   
